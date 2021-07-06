@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPER ADMINISTRATOR</title>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/static/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/static/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="/static/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/static/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="/static/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="/static/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="/static/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/static/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="/static/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="/static/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Toastr -->
+    <style>
+        .btn-secondary {
+            color: #fff;
+            background-color: #007BFF;
+            border-color: #007BFF;
+            box-shadow: none;
+            border-radius: 10%;
+        }
+
+        .dropdown-toggle {
+            background-color: #ffffff;
+        }
+
+
+        < !-- serial no -->body {
+            counter-reset: Serial;
+        }
+
+        table {
+            border-collapse: separate;
+        }
+
+        .auto-index td:first-child:before {
+            counter-increment: Serial;
+            content: counter(Serial);
+        }
+    </style>
+</head>
+
+<body style="background-color:aliceblue" ">
+    <div class="" style=" padding:3%">
+    <div class=" main-container">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-md-0">
+                    <div class="page-title">
+                        <h3>Sales Dashboard</h3>
+                    </div>
+                </div>
+                <div class="main-menu col-md-0 ml-auto">
+                    <div class="dropdown filter custom-dropdown-icon">
+                        <a class="dropdown-toggle btn border" role="button" id="filterDropdown"
+                            data-toggle="dropdown"><span class=text><span>Hello,
+                                    Super
+                                    Administrator</span></span> </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class=dropdown-item type="button" data-toggle="modal" data-target="#add_company"><span
+                                    class=text> Add Company</span></a>
+                            <a class=dropdown-item href="/logout/">
+                                <span class=text> Sign Out </span></a>
+                        </div>
+                        <div class="modal fade" id="add_company">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="color: #fff; background-color:#007BFF">
+                                        <h4 class="modal-title">Add Admin Details</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="background-color:#FAFAFA; ">
+                                        <form action="/superuser/?action=add" method="POST">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"
+                                                            style="background-color: aliceblue; color: #007BFF;"><i
+                                                                class="fas fa-user"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" name="name" id="name"
+                                                        placeholder="Full Name">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"
+                                                            style="background-color: aliceblue; color: #007BFF;">
+                                                            <i class="fas fa-at"></i></span>
+                                                    </div>
+                                                    <input type="email" class="form-control" name="email" id="email"
+                                                        placeholder="Email">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"
+                                                            style="background-color: aliceblue; color: #007BFF;"><i
+                                                                class="fas fa-phone"></i></span>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="phone"
+                                                        data-inputmask='"mask": "9999999999"' data-mask name="phone"
+                                                        placeholder="Mobile No.">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"
+                                                            style="background-color: aliceblue; color: #007BFF;"><i
+                                                                class="fas fa-lock"></i></span>
+                                                    </div>
+                                                    <input type="password" class="form-control" name="password"
+                                                        id="password" placeholder="Password">
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary"
+                                                style="width:100%">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <section class="content" style="padding-top: 1%;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+
+                            <div class="card-body elevation-2">
+                                <table id="example1" class="table table-bordered table-hover accent-blue auto-index">
+                                    <thead>
+                                        <tr>
+                                            <th>SL&nbsp;NO.</th>
+                                            <th>ID</th>
+                                            <th>COMPANY&nbsp;NAME</th>
+                                            <th>DATE&nbsp;REGISTERED</th>
+                                            <th>EMAIL</th>
+                                            <th>MOBILE</th>
+                                            <th>PASSWORD</th>
+                                            <th>STATUS</th>
+                                            <th>ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for row in user %}
+                                        <tr>
+                                            <td> </td>
+                                            <td>{{ row.id }}</td>
+                                            <td>{{ row.name }}</td>
+                                            <td>{{ row.created }}</td>
+                                            <td>{{ row.email }}</td>
+                                            <td>{{ row.phone }}</td>
+                                            <td>{{ row.passwordshow }}</td>
+                                            <td>{{ row.approval }}
+                                                <div class="card-body">
+                                                    <!-- <input type="checkbox" value="" name="my-checkbox"
+                                                        checked data-bootstrap-switch data-off-color="danger"
+                                                        data-on-color="success">
+                                                </div> -->
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-app"
+                                                    style="background-color:rgb(255, 255, 255); color:#36c00c;"
+                                                    href="/superuser/?action=dashboard&id={{ row.id }}">
+                                                    <i class="fa fa-eye"></i> Visit
+                                                </a>
+
+                                                <a class="btn btn-app"
+                                                    style="background-color:rgb(255, 255, 255); color:#029baf;"
+                                                    type="button" data-toggle="modal"
+                                                    data-target="#companyedit{{row.id}}">
+                                                    <i class="fa fa-edit"></i> Edit
+                                                </a>
+
+
+
+
+                                                <div class="modal fade" id="companyedit{{row.id}}">
+
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header"
+                                                                style="color: #fff; background-color:#007BFF">
+                                                                <h4 class="modal-title">Update Admin Details</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body" style="background-color:#FAFAFA; ">
+                                                                <form id="updatecompany"
+                                                                    action="/superuser/?action=edit&id={{row.id}}"
+                                                                    method="POST">
+                                                                    <div class="form-group">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text"
+                                                                                    style="background-color: aliceblue; color: #007BFF;"><i
+                                                                                        class="fas fa-user"></i></span>
+                                                                            </div>
+                                                                            <input type="text" class="form-control"
+                                                                                name="name" value="{{row.name}}"
+                                                                                id="update_name" placeholder="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text"
+                                                                                    style="background-color: aliceblue; color: #007BFF;">
+                                                                                    <i class="fas fa-at"></i></span>
+                                                                            </div>
+                                                                            <input type="email" class="form-control"
+                                                                                name="email" value="{{row.email}}"
+                                                                                id="update_email" placeholder="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text"
+                                                                                    style="background-color: aliceblue; color: #007BFF;"><i
+                                                                                        class="fas fa-phone"></i></span>
+                                                                            </div>
+                                                                            <input type="text" class="form-control"
+                                                                                id="update_phone"
+                                                                                data-inputmask='"mask": "9999999999"'
+                                                                                data-mask name="phone"
+                                                                                value="{{row.phone}}" placeholder="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text"
+                                                                                    style="background-color: aliceblue; color: #007BFF;"><i
+                                                                                        class="fas fa-lock"></i></span>
+                                                                            </div>
+                                                                            <input type="text" class="form-control"
+                                                                                name="password"
+                                                                                value="{{row.passwordshow}}"
+                                                                                id="update_password" placeholder="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary"
+                                                                        style="width:100%">Update</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+
+
+
+
+
+                                                <a class="btn btn-app"
+                                                    style="background-color:rgb(255, 255, 255); color:#cc0909;"
+                                                    href="/superuser/?action=delete&id={{ row.id }}">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+
+        </section>
+
+    </div>
+    </div>
+    </div>
+    <!-- jQuery -->
+    <script src="/static/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="/static/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="/static/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="/static/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="/static/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="/static/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="/static/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="/static/plugins/moment/moment.min.js"></script>
+    <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="/static/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="/static/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="/static/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/static/dist/js/adminlte.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="/static/dist/js/pages/dashboard.js"></script>
+
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/static/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/static/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/static/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/static/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="/static/plugins/jszip/jszip.min.js"></script>
+    <script src="/static/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="/static/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="/static/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="/static/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "print"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+
+    <script type=text/javascript>
+        $("#company").on("submit", function (a) {
+        a.preventDefault();
+        var b = $(this).serialize();
+        $(".account-btn").attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "/superuser/?action=add",
+            data: b,
+            success: function (c) {
+                $(".valid-feedback").css({ display: "none" });
+                $(".invalid-feedback").css({ display: "none" });
+                1 == c.success
+                    ? ($(".valid-feedback").css({ display: "block" }), $(".valid-feedback").text(c.msg), (location.href = "/" + c.url))
+                    : ($(".account-btn").attr("disabled", false), $(".invalid-feedback").css({ display: "block" }), $(".invalid-feedback").text(c.msg));
+            },
+            error: function (c) {
+                $(".invalid-feedback").text(c.msg);
+            },
+        });
+    });  
+    </script>
+
+
+</body>
+
+</html>

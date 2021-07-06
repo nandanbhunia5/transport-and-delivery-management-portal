@@ -1,0 +1,79 @@
+{% extends "backend/trip.html" %}
+
+{% block activetrips %}active{% endblock %}
+
+{% block activeacid %}active{% endblock %}
+
+{% block acid %}
+<section class="content" style="box-shadow: -4px 0; background-color:rgb(255, 255, 255)">
+    <div class="container-fluid">
+        <div class="col-12">
+            <div class="card-body" style="overflow-x: auto;">
+                <table id="example1" class="table table-bordered table-hover auto-index">
+                    <thead>
+                        <tr>
+                            <th>SL&nbsp;NO.</th>
+                            <th>LOADING&nbsp;DATE</th>
+                            <th>TT&nbsp;NO.</th>
+                            <th>PRODUCT</th>
+                            <th>LOADED&nbsp;AT</th>
+                            <th>DESTINATION&nbsp;(UNLOAD)</th>
+                            <th>LR&nbsp;NO.</th>
+                            <th>INVOICE&nbsp;NO.</th>
+                            <th>LOAD&nbsp;QTY&nbsp;(MT)</th>
+                            <th>SHORTAGE</th>
+                            <th>UNLOADING&nbsp;DATE</th>
+                            <th>UNLOADING&nbsp;(QTY)</th>
+                            <th>HELPER&nbsp;UNLOAD&nbsp;ADV</th>
+                            <th>HSD&nbsp;QTY&nbsp;(LTS)</th>
+                            <th>ADV&nbsp;CASH</th>
+                            <th>TOTAL&nbsp;ADV</th>
+                            <th>BILLING&nbsp;RATE</th>
+                            <th>TOTAL&nbsp;AMOUNT</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in acid %}
+                        <tr>
+                            <td> </td>
+                            <td>{{ row.loadingdate }}</td>
+                            <td>{{ row.ttno }}</td>
+                            <td>{{ row.product }}</td>
+                            <td>{{ row.loadedat }}</td>
+                            <td>{{ row.destination }}</td>
+                            <td>{{ row.lrno }}</td>
+                            <td>{{ row.invoice }}</td>
+                            <td>{{ row.loadqty }}</td>
+                            <td>{{ row.shortage }}</td>
+                            <td>{{ row.unloadingdate }}</td>
+                            <td>{{ row.unloadingqty }}</td>
+                            <td>{{ row.helperunload }}</td>
+                            <td>{{ row.hsdqty }}</td>
+                            <td>{{ row.advcash }}</td>
+                            <td>{{ row.totaladv }}</td>
+                            <td>{{ row.billingrate }}</td>
+                            <td>{{ row.totalamount }}</td>
+                            <td>
+                                <a class="btn btn-app" style="background-color:rgb(255, 255, 255); color:#029baf;"
+                                    href="/trips/?q=acid&action=edit&id={{ row.id }}">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                &nbsp;
+                                <a class="btn btn-app" style="background-color:rgb(255, 255, 255); color:#cc0909;"
+                                    href="/trips/?q=acid&action=delete&id={{ row.id }}">
+                                    <i class="fa fa-trash"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

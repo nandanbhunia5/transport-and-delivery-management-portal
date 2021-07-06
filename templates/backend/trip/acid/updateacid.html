@@ -1,0 +1,184 @@
+{% extends "backend/trip.html" %}
+
+{% block activetrips %}active{% endblock %}
+
+{% block activeacid %}active{% endblock %}
+
+{% block updateacid %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card-body">
+                    <h4>Update ACID Trip Info.</h4>
+                    {% for row in acid %}
+                    <form id="acid" action="/trips/?q=acid&action=edit&id={{ row.id }}&n=store" method="POST">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-inputmask-alias="datetime"
+                                            data-inputmask-inputformat="dd/mm/yyyy" data-mask id="loadingdate"
+                                            name="loadingdate" placeholder="Loading date" value="{{ row.loadingdate }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <select class="form-control" id="ttno" name="ttno">
+                                            <option value="{{ row.ttno }}">{{ row.ttno }}
+                                            </option>
+                                            <option value="" disabled>Select TT
+                                                No.
+                                            </option>
+                                            {% for row in vehicle %}
+                                            <option value="{{row.vehicle_name}}">{{row.vehicle_name}}
+                                            </option>
+                                            {% endfor %}
+                                            <option data-toggle="modal" data-dismiss="modal" data-target="#vehicle"
+                                                style="background-color: rgb(159, 172, 185);">
+                                                --ADD NEW VEHICLE--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="product" id="product"
+                                            placeholder="Product" value="{{ row.product }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.form-group -->
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control timepicker" name="loadedat" id="loadedat"
+                                            placeholder="Loaded at" value="{{ row.loadedat }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="destination" id="destination"
+                                            placeholder="Destination (unload)" value="{{ row.destination }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="lrno" id="lrno"
+                                            placeholder="LR No." value="{{ row.lrno }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="invoice" id="invoice"
+                                            placeholder="Invoice No." value="{{ row.invoice }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="loadqty" id="loadqty"
+                                            placeholder="Load qty (MT)" value="{{ row.loadqty }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="shortage" id="shortage"
+                                            placeholder="Shortage" value="{{ row.shortage }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-inputmask-alias="datetime"
+                                            data-inputmask-inputformat="dd/mm/yyyy" data-mask id="unloadingdate"
+                                            name="unloadingdate" placeholder="Unloading date"
+                                            value="{{ row.unloadingdate }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="unloadingqty" id="unloadingqty"
+                                            placeholder="Unloading (Qty)" value="{{ row.unloadingqty }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="helperunload" id="helperunload"
+                                            placeholder="Helper unload (Adv)" value="{{ row.helperunload }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="hsdqty" id="hsdqty"
+                                            placeholder="HSD qty (LTS)" value="{{ row.hsdqty }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="advcash" id="advcash"
+                                            placeholder="Advance cash" value="{{ row.advcash }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="totaladv" id="totaladv"
+                                            placeholder="Total advance" value="{{ row.totaladv }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="billingrate" id="billingrate"
+                                            placeholder="Billing rate" value="{{ row.billingrate }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="totalamount"
+                                            id="totalamount" placeholder="Total Amount"
+                                            value="{{ row.totalamount }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="hidden" class="form-control" name="status" id="status" value="ACID">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width:100%">Update</button>
+                        </div>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

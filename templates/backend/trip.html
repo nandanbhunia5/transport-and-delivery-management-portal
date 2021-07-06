@@ -1,0 +1,425 @@
+{% extends "backend/base.html" %}
+{% block css %}
+<link rel="stylesheet" href="/static/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/dist/css/adminlte.min.css">
+
+<link rel="stylesheet" href="/static/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="/static/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<style>
+    .btn-secondary {
+        color: #fff;
+        background-color: #007BFF;
+        border-color: #007BFF;
+        box-shadow: none;
+        border-radius: 10%;
+    }
+
+    .trip {
+        float: right;
+    }
+
+    .table {
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+
+    a {
+        margin-left: 10px;
+    }
+
+    .form-control:focus {
+        border-color: #007BFF;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(0, 123, 255, 1);
+    }
+
+    body {
+        counter-reset: Serial;
+    }
+
+    table {
+        border-collapse: separate;
+    }
+
+    .auto-index td:first-child:before {
+        counter-increment: Serial;
+        content: counter(Serial);
+    }
+</style>
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Trips</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Trips</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="elevation-3">
+                        <div class="card" style="box-shadow: -4px 0; background-color:rgb(255, 255, 255)">
+                            <div class="card-header">
+                                <button type="button" class="btn" style="background-color: #007BFF; color: #FAFAFA;"
+                                    data-toggle="modal" data-target="#trip_type">
+                                    Add Trip
+                                </button>
+
+
+
+
+                                <a type="button"
+                                    class="btn btn-outline-primary trip {% block activenrl %}{% endblock %}"
+                                    href="/trips/?q=nrl">
+                                    NRL
+                                </a>
+                                <a type="button"
+                                    class="btn btn-outline-primary trip {% block activeacid %}{% endblock %}"
+                                    href="/trips/?q=acid">
+                                    ACID
+                                </a>
+                                <a type="button"
+                                    class="btn btn-outline-primary trip {% block activeall %}{% endblock %}"
+                                    href="/trips/">
+                                    All Trips
+                                </a>
+
+
+
+
+
+
+                                <div class="modal fade" id="trip_type">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header"
+                                                style="background-color: #007BFF; color: #FAFAFA;">
+                                                <h4 class="modal-title">Trip Type</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close" style="color: #fff;">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="background-color:aliceblue">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <p>Select Trip Type</p>
+                                                            <div class="form-group">
+                                                                <div class="input-group">
+                                                                    <select class="form-control">
+                                                                        <option value="" disabled selected hidden>Select
+                                                                            Trip Type
+                                                                        </option>
+                                                                        <option
+                                                                            onclick="location.href='/trips/?q=nrl&action=add'"
+                                                                            style="background-color: rgb(159, 172, 185);">
+                                                                            --ADD NRL TRIP--</option>
+                                                                        <option
+                                                                            onclick="location.href='/trips/?q=acid&action=add'"
+                                                                            style="background-color: rgb(159, 172, 185);">
+                                                                            --ADD ACID TRIP--</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            {% block addacid %}
+                            {% endblock %}
+
+                            {% block addnrl %}
+                            {% endblock %}
+
+
+
+
+
+
+
+                            {% block trips %}
+                            {% endblock %}
+
+                            {% block nrl %}
+                            {% endblock %}
+
+                            {% block acid %}
+                            {% endblock %}
+
+
+
+
+                            {% block updateacid %}
+                            {% endblock %}
+
+                            {% block updatenrl %}
+                            {% endblock %}
+
+                            <!-- Vehicle Model -->
+                            <div class="modal fade" id="vehicle">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color: #007BFF; color: #FAFAFA;">
+                                            <h4 class="modal-title">Add Vehicle Info.</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                                style="color: #fff;">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="/vehicles/?action=add" class="modal-body"
+                                            style="background-color:aliceblue" method="POST">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <select class="form-control" name="supplier_name"
+                                                                    id="supplier_name">
+                                                                    {% for row in supplier %}
+                                                                    <option value="{{row.supplier_name}}">
+                                                                        {{row.supplier_name}}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                    <option value="" disabled selected hidden>Select
+                                                                        Supplier
+                                                                    </option>
+                                                                    <option data-toggle="modal" data-target="#supplier"
+                                                                        data-dismiss="modal"
+                                                                        style="background-color: rgb(159, 172, 185);">
+                                                                        --ADD NEW SUPPLIER--</option>
+
+
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control"
+                                                                    name="vehicle_name" id="vehicle_name"
+                                                                    placeholder="Vehicle name">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+                                                                <select class="form-control" name="select_type"
+                                                                    id="select_type">
+                                                                    <option value="" disabled selected hidden>Select
+                                                                        Type
+                                                                    </option>
+                                                                    <option value="KiloMeters">KiloMeters</option>
+                                                                    <option value="Miles">Miles
+                                                                    </option>
+                                                                    <option value="Hours">Hours</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+
+                                                                <input type="text" class="form-control" id="dimension"
+                                                                    name="dimension" placeholder="Enter dimension">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+
+                                                                <input type="text" class="form-control" id="weight"
+                                                                    name="weight" placeholder="Weight capacity">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+
+                                                                <input type="text" class="form-control"
+                                                                    id="ground_clearence" name="ground_clearence"
+                                                                    placeholder="Ground clearence">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+
+                                                                <input type="text" class="form-control" id="model"
+                                                                    name="model" placeholder="Make/model">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+
+                                                                <input type="text" class="form-control"
+                                                                    id="manufacture_year" name="manufacture_year"
+                                                                    placeholder="Year of manufacture">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+
+                                                                <input type="text" class="form-control" id="color"
+                                                                    name="color" placeholder="Enter color">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+
+                                                                <input type="text" class="form-control"
+                                                                    id="registration_no" name="registration_no"
+                                                                    placeholder="Registration no.">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+
+                                                                <input type="text" class="form-control" id="engine_no"
+                                                                    name="engine_no" placeholder="Engine no.">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <div class="input-group">
+
+                                                                <input type="text" class="form-control" id="chassis_no"
+                                                                    name="chassis_no" placeholder="Chassis no.">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary"
+                                                style="width:100%">Add</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+
+
+
+
+
+
+
+
+{% endblock %}
+{% block js %}
+<!-- <script src="/static/plugins/jquery/jquery.min.js"></script> -->
+<!-- Bootstrap 4 -->
+<script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/static/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/static/plugins/jszip/jszip.min.js"></script>
+<script src="/static/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/static/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": false, "lengthChange": true, "autoWidth": false, "paging": true, "searching": true, "ordering": true,
+            "buttons": ["copy", "csv", "excel", "print"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": false,
+        });
+    });
+</script>
+
+<script src="/static/plugins/select2/js/select2.full.min.js"></script>
+
+<script src="/static/plugins/moment/moment.min.js"></script>
+<script src="/static/plugins/inputmask/jquery.inputmask.min.js"></script>
+
+<!-- Page specific script -->
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+
+        //Datemask dd/mm/yyyy
+        $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+        //Datemask2 mm/dd/yyyy
+        $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+        //Money Euro
+        $('[data-mask]').inputmask()
+
+    })
+</script>
+
+
+{% endblock %}

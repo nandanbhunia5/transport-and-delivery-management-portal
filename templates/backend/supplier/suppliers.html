@@ -1,0 +1,375 @@
+{% extends "backend/base.html" %}
+{% block css %}
+<link rel="stylesheet" href="/static/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/dist/css/adminlte.min.css">
+<style>
+    .btn-secondary {
+        color: #fff;
+        background-color: #007BFF;
+        border-color: #007BFF;
+        box-shadow: none;
+        border-radius: 10%;
+    }
+
+    body {
+        counter-reset: Serial;
+    }
+
+    table {
+        border-collapse: separate;
+    }
+
+    .auto-index td:first-child:before {
+        counter-increment: Serial;
+        content: counter(Serial);
+    }
+
+    .form-control:focus {
+        border-color: #007BFF;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(0, 123, 255, 1);
+    }
+</style>
+
+{% endblock %}
+
+{% block activesuppliers %}active{% endblock %}
+
+{% block body %}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Suppliers</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Suppliers</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="elevation-3">
+                    <div class="card" style="box-shadow: -4px 0; background-color:rgb(255, 255, 255)">
+                        <div class="card-header">
+                            <!-- <button type="button" class="btn" style="background-color: #007BFF; color: #FAFAFA;"
+                            onclick="location.href='/suppliers/?action=add'">
+                                Add Supplier
+                            </button> -->
+
+                            <button type="button" class="btn" style="background-color: #007BFF; color: #FAFAFA;"
+                                data-toggle="modal" data-dismiss="modal" data-target="#supplier">
+                                Add Supplier
+                            </button>
+                        </div>
+
+                        <div class="card-body" style="overflow-x: auto;">
+                            <table id="example1" class="table table-bordered table-hover auto-index">
+                                <thead>
+                                    <tr>
+                                        <th>SL&nbsp;NO.</th>
+                                        <th>SUPPLIER&nbsp;NAME</th>
+                                        <th>EMAIL</th>
+                                        <th>MOBILE</th>
+                                        <th>GSTIN</th>
+                                        <th>PAN</th>
+                                        <th>ADDRESS</th>
+                                        <th>CITY</th>
+                                        <th>PIN&nbsp;CODE</th>
+                                        <th>STATE</th>
+                                        <th>COUNTRY</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for row in supplier %}
+                                    <tr>
+                                        <td> </td>
+                                        <td>{{ row.supplier_name }}</td>
+                                        <td>{{ row.email }}</td>
+                                        <td>{{ row.mobile }}</td>
+                                        <td>{{ row.gstin }}</td>
+                                        <td>{{ row.pan }}</td>
+                                        <td>{{ row.address }}</td>
+                                        <td>{{ row.city }}</td>
+                                        <td>{{ row.pin }}</td>
+                                        <td>{{ row.state }}</td>
+                                        <td>{{ row.country }}</td>
+                                        <td>
+                                            <a class="btn btn-app"
+                                                style="background-color:rgb(255, 255, 255); color:#029baf;"
+                                                type="button" data-toggle="modal"
+                                                data-target="#updatesupplier{{row.id}}">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </a>
+
+                                            <div class="modal fade" id="updatesupplier{{row.id}}">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header"
+                                                            style="background-color: #007BFF; color: #FAFAFA;">
+                                                            <h4 class="modal-title">Update Supplier Info.</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close" style="color: #fff;">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="background-color:aliceblue">
+                                                            <form id="updatesupplier"
+                                                                action="/suppliers/?action=edit&id={{row.id}}"
+                                                                method="POST">
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="supplier_name"
+                                                                                        id="supplier_name"
+                                                                                        value="{{row.supplier_name}}"
+                                                                                        placeholder="Name">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="email" id="email"
+                                                                                        value="{{row.email}}"
+                                                                                        placeholder="Email">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="gstin" id="gstin"
+                                                                                        value="{{row.gstin}}"
+                                                                                        placeholder="GSTIN">
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="mobile" id="mobile"
+                                                                                        value="{{row.mobile}}"
+                                                                                        data-inputmask='"mask": "9999999999"'
+                                                                                        data-mask
+                                                                                        placeholder="Mobile No.">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"
+                                                                                        class="form-control" name="pan"
+                                                                                        id="pan" value="{{row.pan}}"
+                                                                                        placeholder="PAN">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="address" id="address"
+                                                                                        value="{{row.address}}"
+                                                                                        placeholder="Address">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"
+                                                                                        class="form-control" name="city"
+                                                                                        id="city" value="{{row.city}}"
+                                                                                        placeholder="City">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"
+                                                                                        class="form-control" name="pin"
+                                                                                        id="pin" value="{{row.pin}}"
+                                                                                        placeholder="Pin Code">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <select class="form-control"
+                                                                                        name="state" id="state">
+                                                                                        <option>
+                                                                                            {{row.state}}
+                                                                                        </option>
+                                                                                        <option value="Andhra Pradesh">
+                                                                                            Andhra Pradesh
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="Arunachal Pradesh">
+                                                                                            Arunachal Pradesh
+                                                                                        </option>
+                                                                                        <option value="Bihar">Bihar
+                                                                                        </option>
+                                                                                        <option value="Chhattisgarh">
+                                                                                            Chhattisgarh</option>
+                                                                                        <option value="Goa">Goa</option>
+                                                                                        <option value="Gujarat">Gujarat
+                                                                                        </option>
+                                                                                        <option value="Haryana">Haryana
+                                                                                        </option>
+                                                                                        <option
+                                                                                            value="Himachal Pradesh">
+                                                                                            Himachal Pradesh
+                                                                                        </option>
+                                                                                        <option value="Jammu&Kashmir">
+                                                                                            Jammu&Kashmir</option>
+                                                                                        <option value="Jharkhand">
+                                                                                            Jharkhand</option>
+                                                                                        <option value="Karnataka">
+                                                                                            Karnataka</option>
+                                                                                        <option value="Kerala">Kerala
+                                                                                        </option>
+                                                                                        <option value="Madhya Pradesh">
+                                                                                            Madhya Pradesh
+                                                                                        </option>
+                                                                                        <option value="Maharashtra">
+                                                                                            Maharashtra</option>
+                                                                                        <option value="Manipur">Manipur
+                                                                                        </option>
+                                                                                        <option value="Meghalaya">
+                                                                                            Meghalaya</option>
+                                                                                        <option value="Mizoram">Mizoram
+                                                                                        </option>
+                                                                                        <option value="Nagaland">
+                                                                                            Nagaland</option>
+                                                                                        <option value="Odisha">Odisha
+                                                                                        </option>
+                                                                                        <option value="Punjab">Punjab
+                                                                                        </option>
+                                                                                        <option value="Rajasthan">
+                                                                                            Rajasthan</option>
+                                                                                        <option value="Sikkim">Sikkim
+                                                                                        </option>
+                                                                                        <option value="Tamil Nadu">Tamil
+                                                                                            Nadu</option>
+                                                                                        <option value="Telangana">
+                                                                                            Telangana</option>
+                                                                                        <option value="Tripura">Tripura
+                                                                                        </option>
+                                                                                        <option value="Uttar Pradesh">
+                                                                                            Uttar Pradesh</option>
+                                                                                        <option value="Uttarakhand">
+                                                                                            Uttarakhand</option>
+                                                                                        <option value="West Bengal">West
+                                                                                            Bengal</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="country" id="country"
+                                                                                        value="{{row.country}}"
+                                                                                        placeholder="Country">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary"
+                                                                    style="width:100%">Update</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <a class="btn btn-app"
+                                                style="background-color:rgb(255, 255, 255); color:#cc0909;"
+                                                href="/suppliers/?action=delete&id={{ row.id }}">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </a>
+                                    </tr>
+                                    {% endfor %}
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+{% block js %}
+<!-- <script src="/static/plugins/jquery/jquery.min.js"></script> -->
+<!-- Bootstrap 4 -->
+<script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/static/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/static/plugins/jszip/jszip.min.js"></script>
+<script src="/static/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/static/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script src="/static/dist/js/demo.js"></script>
+
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": false, "lengthChange": true, "autoWidth": false, "paging": true, "searching": true, "ordering": true,
+            "buttons": ["copy", "csv", "excel", "print"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": false,
+        });
+    });
+</script>
+{% endblock %}

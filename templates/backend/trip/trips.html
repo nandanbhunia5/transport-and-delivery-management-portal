@@ -1,0 +1,49 @@
+{% extends "backend/trip.html" %}
+
+{% block activetrips %}active{% endblock %}
+
+
+{% block activeall %}active{% endblock %}
+{% block trips %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-12">
+            <div class="card-body" style="overflow-x:auto;">
+                <table id="example1" class="table table-bordered table-hover auto-index">
+                    <thead>
+                        <tr>
+                            <th>LOADING&nbsp;DATE</th>
+                            <th>TRIP&nbsp;TYPE</th>
+                            <th>DESTINATION</th>
+                            <th>VEHICLE&nbsp;NAME</th>
+                            <th>TOTAL&nbsp;AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in nrl %}
+                        <tr>
+                            <td>{{ row.loadingdate }}</td>
+                            <td>{{ row.status }}</td>
+                            <td>{{ row.destination }}</td>
+                            <td>{{ row.ttno }}</td>
+                            <td>{{ row.totalamount }}</td>
+                        </tr>
+                        {% endfor %}
+
+                        {% for row in acid %}
+                        <tr>
+                            <td>{{ row.loadingdate }}</td>
+                            <td>{{ row.status }}</td>
+                            <td>{{ row.destination }}</td>
+                            <td>{{ row.ttno }}</td>
+                            <td>{{ row.totalamount }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

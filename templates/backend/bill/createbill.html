@@ -1,0 +1,770 @@
+{% extends "backend/base.html" %}
+{% block css %}
+<link rel="stylesheet" href="/static/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<link rel="stylesheet" href="/static/dist/css/adminlte.min.css">
+
+<link rel="stylesheet" href="/static/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="/static/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="/static/plugins/daterangepicker/daterangepicker.css">
+
+<style>
+    .btn-secondary {
+        color: #fff;
+        background-color: #007BFF;
+        border-color: #007BFF;
+        box-shadow: none;
+        border-radius: 10%;
+    }
+
+    .form-control:focus {
+        border-color: #007BFF;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(0, 123, 255, 1);
+    }
+</style>
+{% endblock %}
+
+{% block activebilling %}active{% endblock %}
+
+{% block body %}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Create Bill</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/billing/">Billing</a></li>
+                    <li class="breadcrumb-item active">Create Bill</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <form id="billing" action="/billing/?action=add" method="POST">
+            <div class="row">
+                <div class="col-12">
+                    <div class="elevation-3">
+                        <div class="card" style="box-shadow: -4px 0; background-color:rgb(255, 255, 255)">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <label>
+                                            Name of the Service Receiver
+                                        </label>
+                                    </div>
+                                    <div class="col col-md-10">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <select class="form-control billing" style="width: 100%;"
+                                                    name="customer_name" id="customer_name" required>
+                                                    <option value="">Select Customer</option>
+                                                    {% for row in customer %}
+                                                    <option value="{{row.customer_name}}{{row.id}}">
+                                                        {{row.customer_name}}
+                                                    </option>
+                                                    {% endfor %}
+                                                    <option onclick="location.href='/customers/'"
+                                                        style="background-color: rgb(159, 172, 185);">
+                                                        --ADD NEW CUSTOMER--</option>
+                                                </select>
+                                                <!-- <input type="text" class="form-control billing" name= "customer_name" id="customer_name"
+                                                    placeholder="Enter customer name" required> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            Address
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-10">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control billing" name="address"
+                                                    id="address" placeholder="Enter full address" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            PAN Number
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-10">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control billing" name="pan" id="pan"
+                                                    placeholder="Enter pan no." required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            GSTIN Number
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-10">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control billing" name="gstin" id="gstin"
+                                                    placeholder="Enter gstin no." required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            Invoice No.
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control billing" name="invno" id="invno"
+                                                    placeholder="Enter invoice no." required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            Invoice Date
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-5">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="date" class="form-control billing" name="invdate"
+                                                    id="invdate" style="width: 50000000px;" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            Job Date
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="date" class="form-control billing" name="jobdate"
+                                                    id="jobdate" style="width: 50000000px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            Date of Completion
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-5">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="date" class="form-control billing"
+                                                    name="date_of_complition" id="date_of_complition"
+                                                    style="width: 50000000px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            Order No.
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control billing" class="form-control"
+                                                    name="ordno" id="ordno" placeholder="Enter order no.">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            Order Date
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-5">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="date" class="form-control billing" name="orderdate"
+                                                    id="orderdate" style="width: 50000000px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <table class="table table-sm table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <p class="billing">Description</p>
+                                                </th>
+                                                <th>
+                                                    <p class="billing">HSN/SAC</p>
+                                                </th>
+                                                <th>
+                                                    <p class="billing">QTY (UOM)</p>
+                                                </th>
+                                                <th>
+                                                    <p class="billing">Rate</p>
+                                                </th>
+                                                <th>
+                                                    <p class="billing">Taxable Amount (Rs)</p>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="1">
+                                                <td><textarea class="form-control" id="description_1"
+                                                        name="description_1" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_1" name="hsn_sac_1"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_1" name="qty_1" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="rate_1" name="rate_1" rows="4"
+                                                        placeholder="Rs"></textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_1" name="amount_1"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+                                            <tr id="2" style="display:none">
+                                                <td><textarea class="form-control" id="description_2"
+                                                        name="description_2" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_2" name="hsn_sac_2"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_2" name="qty_2" rows="4"
+                                                        placeholder="Enter ...">0</textarea></td>
+                                                <td><textarea class="form-control" id="rate_2" name="rate_2" rows="4"
+                                                        placeholder="Rs">0</textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_2" name="amount_2"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+                                            <tr id="3" style="display:none">
+                                                <td><textarea class="form-control" id="description_3"
+                                                        name="description_3" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_3" name="hsn_sac_3"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_3" name="qty_3" rows="4"
+                                                        placeholder="Enter ...">0</textarea></td>
+                                                <td><textarea class="form-control" id="rate_3" name="rate_3" rows="4"
+                                                        placeholder="Rs">0</textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_3" name="amount_3"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+                                            <tr id="4" style="display:none">
+                                                <td><textarea class="form-control" id="description_4"
+                                                        name="description_4" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_4" name="hsn_sac_4"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_4" name="qty_4" rows="4"
+                                                        placeholder="Enter ...">0</textarea></td>
+                                                <td><textarea class="form-control" id="rate_4" name="rate_4" rows="4"
+                                                        placeholder="Rs">0</textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_4" name="amount_4"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+                                            <tr id="5" style="display:none">
+                                                <td><textarea class="form-control" id="description_5"
+                                                        name="description_5" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_5" name="hsn_sac_5"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_5" name="qty_5" rows="4"
+                                                        placeholder="Enter ...">0</textarea></td>
+                                                <td><textarea class="form-control" id="rate_5" name="rate_5" rows="4"
+                                                        placeholder="Rs">0</textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_5" name="amount_5"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+                                            <tr id="6" style="display:none">
+                                                <td><textarea class="form-control" id="description_6"
+                                                        name="description_6" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_6" name="hsn_sac_6"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_6" name="qty_6" rows="4"
+                                                        placeholder="Enter ...">0</textarea></td>
+                                                <td><textarea class="form-control" id="rate_6" name="rate_6" rows="4"
+                                                        placeholder="Rs">0</textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_6" name="amount_6"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+                                            <tr id="7" style="display:none">
+                                                <td><textarea class="form-control" id="description_7"
+                                                        name="description_7" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_7" name="hsn_sac_7"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_7" name="qty_7" rows="4"
+                                                        placeholder="Enter ...">0</textarea></td>
+                                                <td><textarea class="form-control" id="rate_7" name="rate_7" rows="4"
+                                                        placeholder="Rs">0</textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_7" name="amount_7"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+                                            <tr id="8" style="display:none">
+                                                <td><textarea class="form-control" id="description_8"
+                                                        name="description_8" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_8" name="hsn_sac_8"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_8" name="qty_8" rows="4"
+                                                        placeholder="Enter ...">0</textarea></td>
+                                                <td><textarea class="form-control" id="rate_8" name="rate_8" rows="4"
+                                                        placeholder="Rs">0</textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_8" name="amount_8"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+                                            <tr id="9" style="display:none">
+                                                <td><textarea class="form-control" id="description_9"
+                                                        name="description_9" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_9" name="hsn_sac_9"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_9" name="qty_9" rows="4"
+                                                        placeholder="Enter ...">0</textarea></td>
+                                                <td><textarea class="form-control" id="rate_9" name="rate_9" rows="4"
+                                                        placeholder="Rs">0</textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_9" name="amount_9"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+                                            <tr id="10" style="display:none">
+                                                <td><textarea class="form-control" id="description_10"
+                                                        name="description_10" rows="4"
+                                                        placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="hsn_sac_10" name="hsn_sac_10"
+                                                        rows="4" placeholder="Enter ..."></textarea></td>
+                                                <td><textarea class="form-control" id="qty_10" name="qty_10" rows="4"
+                                                        placeholder="Enter ...">0</textarea></td>
+                                                <td><textarea class="form-control" id="rate_10" name="rate_10" rows="4"
+                                                        placeholder="Rs">0</textarea>
+                                                </td>
+                                                <td><textarea class="form-control" id="amount_10" name="amount_10"
+                                                        rows="4" readonly></textarea></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <select class="form-control" name="gst" id="gst" required>
+                                                    <!-- <option value="" disabled selected hidden>Select
+                                                    GST
+                                                </option> -->
+                                                    <option value="0">GST - 0%
+                                                    </option>
+                                                    <option value="5" selected>GST - 5%
+                                                    </option>
+                                                    <option value="12">GST - 12%
+                                                    </option>
+                                                    <option value="18">GST - 18%
+                                                    </option>
+                                                    <option value="28">GST - 28%
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <lable>
+                                            Amount Payable(Rs)
+                                        </lable>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <div class="form-group billing">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control billing" name="total" id="total"
+                                                    placeholder="Enter total amount" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <!-- <button type="button" class="btn"
+                                            style="background-color: #e72222; color: #FAFAFA;"><a href="#"
+                                                style=" color: #FAFAFA;">Remove Line</a>
+                                        </button> -->
+                                        <button id="rmbtn" class="btn btn-danger btn-lg" type="button"
+                                            onclick="RemoveLine()">Remove Line</button>
+                                    </div>
+                                    <div class="col col-md-2">
+                                        <!-- <button type="button" class="btn"
+                                            style="background-color: #007BFF; color: #FAFAFA;"><a href="#"
+                                                style=" color: #FAFAFA;">Add New Line</a>
+                                        </button> -->
+                                        <button id="addbtn" class="btn btn-dark btn-lg" style="float:right"
+                                            type="button" onclick="AddLine()">Add New Line</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!-- <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="3" disabled></textarea>
+                                        </div>
+                                    </div> -->
+                                    <div class="col-sm-12">
+                                        <!-- textarea -->
+                                        <div class="form-group">
+                                            <input type="text" class="form-control billing" name="result" id="result" readonly>
+                                            <!-- <textarea class="form-control" id="result" name="result" rows="1"
+                                                disabled></textarea> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <p class="billing">In Words<input class="form-control billing"
+                                                    name="word" id="word" type="text" readonly></p>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary account-btn" style="background-color: #007BFF; color: #FAFAFA;">
+                Save
+            </button>
+        </form>
+    </div>
+    <!-- </div>
+    </div>
+    </div> -->
+</section>
+{% endblock %}
+{% block js %}
+
+<!-- <script src="/static/plugins/jquery/jquery.min.js"></script> -->
+<!-- Bootstrap 4 -->
+<script src="/static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/static/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/static/plugins/jszip/jszip.min.js"></script>
+<script src="/static/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/static/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/static/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": false, "lengthChange": true, "autoWidth": true,
+            "buttons": ["copy", "csv", "excel", "print"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "responsive": true,
+        });
+    });
+</script>
+
+
+
+<script src="/static/plugins/select2/js/select2.full.min.js"></script>
+
+<script src="/static/plugins/moment/moment.min.js"></script>
+<script src="/static/plugins/inputmask/jquery.inputmask.min.js"></script>
+
+<!-- Page specific script -->
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+
+        //Datemask dd/mm/yyyy
+        $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+        //Datemask2 mm/dd/yyyy
+        // $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+        //Money Euro
+        $('[data-mask]').inputmask()
+
+    })
+</script>
+
+
+
+
+
+<!--   Billing Calculation Part Start     -->
+<script>
+    var i = 1;
+    if (i == 1) {
+        document.getElementById("rmbtn").disabled = true
+    } else {
+        document.getElementById("rmbtn").disabled = false
+    }
+    if (i == 10) {
+        document.getElementById("addbtn").disabled = true
+    } else {
+        document.getElementById("addbtn").disabled = false
+    }
+
+    function checkid() {
+        if (i == 1) {
+            document.getElementById("rmbtn").disabled = true
+        } else {
+            document.getElementById("rmbtn").disabled = false
+        }
+        if (i == 10) {
+            document.getElementById("addbtn").disabled = true
+        } else {
+            document.getElementById("addbtn").disabled = false
+        }
+        $("#billing").trigger("change")
+    }
+
+    function AddLine() {
+        var b = document.getElementById(++i);
+        b.style.display = "";
+        checkid()
+    }
+
+    function RemoveLine() {
+        var b = document.getElementById(i);
+        b.style.display = "none";
+        $("#" + i + " td textarea").val("");
+        i--;
+        checkid()
+    }
+</script>
+
+<!--    Billing Calculation part End    -->
+
+
+
+
+<!--    GST Calculation Part Start   -->
+
+<!-- <script type=text/javascript>
+    $("#billing").on("submit", function(a) {
+    a.preventDefault();
+    var b = $(this).serialize();
+    $(".account-btn").attr("disabled", true);
+    $.ajax({
+        type: "POST",
+        url: "/billing/?action=add",
+        data: b,
+        success: function(c) {
+            1 == c.success ? ($("#msg").css({
+                display: "block",
+                "background-color": "#DFF2BF",
+                color: "#4F8A10"
+            }), $("#msg").text(c.msg), (location.href = "/" + c.url)) : ($("#msg").css({
+                display: "block",
+                "background-color": "#FFD2D2",
+                color: "#D8000C"
+            }), $("#msg").text(c.msg))
+        },
+        error: function(c) {
+            $("#msg").text(c.msg)
+        }
+    })
+}); 
+</script> -->
+<!-- action="/billing/?action=add" method="POST" -->
+<!-- <script type=text/javascript>
+    $("#billing").on("submit", function (a) {
+    a.preventDefault();
+    var b = $(this).serialize();
+    $(".account-btn").attr("disabled", true);
+    $.ajax({
+        method: "POST",
+        url: "/billing/?action=add",
+        data: b,
+        success: function (c) {
+            $(".valid-feedback").css({ display: "none" });
+            $(".invalid-feedback").css({ display: "none" });
+            1 == c.success
+                ? ($(".valid-feedback").css({ display: "block" }), $(".valid-feedback").text(c.msg), (location.href = "/" + c.url))
+                : ($(".account-btn").attr("disabled", false), $(".invalid-feedback").css({ display: "block" }), $(".invalid-feedback").text(c.msg));
+        },
+        error: function (c) {
+            $(".invalid-feedback").text(c.msg);
+        },
+    });
+});  
+</script> -->
+
+<!--   Billing calculation part End     -->
+
+
+
+
+<!--   Message In Worhd Part Start   -->
+<!-- 
+<script type=text/javascript> $("#billing").on("change", function(a) {
+    a.preventDefault();
+    var b = $(this).serialize();
+    $.ajax({
+        // type: "POST",
+        // url: "/billing-cal",
+        data: b,
+        success: function(c) {
+            1 == c.success ? ($("#msg").css({
+                display: "none"
+            }), $("#amount_1").val(c.amount_1), $("#amount_2").val(c.amount_2), $("#amount_3").val(c.amount_3), $("#amount_4").val(c.amount_4), $("#amount_5").val(c.amount_5), $("#amount_6").val(c.amount_6), $("#amount_7").val(c.amount_7), $("#amount_8").val(c.amount_8), $("#amount_9").val(c.amount_9), $("#amount_10").val(c.amount_10), $("#payble").val(c.payble), $("#gst-value").val('\nCGST - ' + c.cgst + '\nSGST - ' + c.sgst + '\nIGST  - ' + c.igst), $("#inwords").val(c.inwords)) : ($("#msg").css({
+                display: "block",
+                "background-color": "#FFD2D2",
+                color: "#D8000C"
+            }), $("#msg").text(c.msg))
+        },
+        error: function(c) {
+            $("#msg").text(c.msg)
+        }
+    })
+}); 
+</script> -->
+
+<!--   Message in Words Part End    -->
+
+<script type=text/javascript>
+    $("#billing").on("change", function(a) {
+        a.preventDefault();
+        var b = $(this).serialize();
+        $.ajax({
+            type: "POST",
+            url: "/billing/?action=details",
+            data: b,
+            success: function(c) {
+                1 == c.success ?
+                    ($("#address").val(c.address), $("#pan").val(c.pan), $("#gstin").val(c.gstin), $("#invno").val(c.invno), $("#ordno").val(c.ordno)) :
+                    ($("#msgvehicle").css({
+                        display: "block",
+                        "background-color": "#FFD2D2",
+                        color: "#D8000C"
+                    }), $("#msgvehicle").text(c.msg));
+            },
+            error: function(c) {
+                $("#msgvehicle").text(c.msg);
+            },
+        });
+    });
+</script>
+
+<script type=text/javascript>
+    $("#billing").on("keyup", function(a) {
+        a.preventDefault();
+        var b = $(this).serialize();
+        $.ajax({
+            type: "POST",
+            url: "/billing/?action=calculate",
+            data: b,
+            success: function(c) {
+                1 == c.success ?
+                    ($("#amount_1").val(c.amount_1), $("#amount_2").val(c.amount_2), $("#amount_3").val(c.amount_3), $("#amount_4").val(c.amount_4),
+                        $("#amount_5").val(c.amount_5), $("#amount_6").val(c.amount_6), $("#amount_7").val(c.amount_7), $("#amount_8").val(c.amount_8),
+                        $("#amount_9").val(c.amount_9), $("#amount_10").val(c.amount_10), $("#total").val(c.total), $("#alltotal").val(c.alltotal), $("#discountresult").val(c.discountshow), $("#taxresult").val(c.taxshow), $("#netamount").val(c.netamount), $("#doctor_id").val(c.doctor_id), $("#appliedcharges").val(c.appliedcharges), $("#reportingdate").val(c.reportingdate), $("#symptom").val(c.symptom), $("#apdatetime").val(c.apdatetime), $("#charges").val(c.charges)) :
+                    ($("#msgvehicle").css({
+                        display: "block",
+                        "background-color": "#FFD2D2",
+                        color: "#D8000C"
+                    }), $("#msgvehicle").text(c.msg));
+            },
+            error: function(c) {
+                $("#msgvehicle").text(c.msg);
+            },
+        });
+    });
+</script>
+
+
+<script type=text/javascript>
+    $("#billing").on("change", function(a) {
+        a.preventDefault();
+        var b = $(this).serialize();
+        $.ajax({
+            type: "POST",
+            url: "/billing/?action=gst",
+            data: b,
+            success: function(c) {
+                1 == c.success ?
+                    ($("#result").val(c.result)) :
+                    ($("#msgvehicle").css({
+                        display: "block",
+                        "background-color": "#FFD2D2",
+                        color: "#D8000C"
+                    }), $("#msgvehicle").text(c.msg));
+            },
+            error: function(c) {
+                $("#msgvehicle").text(c.msg);
+            },
+        });
+    });
+</script>
+
+
+
+<!-- <script type=text/javascript>
+    $("#billing").on("keyup", function(a) {
+        a.preventDefault();
+        var b = $(this).serialize();
+        $.ajax({
+            type: "POST",
+            url: "/billing/?action=words",
+            data: b,
+            success: function(c) {
+                1 == c.success ?
+                    ($("#word").val(c.word)) :
+                    ($("#msgvehicle").css({
+                        display: "block",
+                        "background-color": "#FFD2D2",
+                        color: "#D8000C"
+                    }), $("#msgvehicle").text(c.msg));
+            },
+            error: function(c) {
+                $("#msgvehicle").text(c.msg);
+            },
+        });
+    });
+</script> -->
+
+{% endblock %}

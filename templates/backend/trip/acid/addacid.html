@@ -1,0 +1,180 @@
+{% extends "backend/trip.html" %}
+
+{% block activetrips %}active{% endblock %}
+
+{% block activeacid %}active{% endblock %}
+
+{% block addacid %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card-body">
+                    <h4>Add ACID Trip Info.</h4>
+                    <form action="/trips/?q=acid&action=add" method="POST">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-inputmask-alias="datetime"
+                                            data-inputmask-inputformat="dd/mm/yyyy" data-mask id="loadingdate"
+                                            name="loadingdate" placeholder="Loading date">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <select class="form-control" id="ttno" name="ttno">
+                                            <option value="" disabled selected hidden>Select TT
+                                                No.
+                                            </option>
+                                            <!-- <option value="" disabled>No matches found
+                                            </option> -->
+                                            {% for row in vehicle %}
+                                            <option value="{{row.vehicle_name}}">{{row.vehicle_name}}
+                                            </option>
+                                            {% endfor %}
+                                            <option onclick="location.href='/vehicles/'"
+                                                style="background-color: rgb(159, 172, 185);">
+                                                --ADD NEW VEHICLE--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="product" id="product"
+                                            placeholder="Product">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.form-group -->
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control timepicker" name="loadedat" id="loadedat"
+                                            placeholder="Loaded at">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="destination" id="destination"
+                                            placeholder="Destination (unload)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="lrno" id="lrno"
+                                            placeholder="LR No.">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="invoice" id="invoice"
+                                            placeholder="Invoice No.">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="loadqty" id="loadqty"
+                                            placeholder="Load qty (MT)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="shortage" id="shortage"
+                                            placeholder="Shortage">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-inputmask-alias="datetime"
+                                            data-inputmask-inputformat="dd/mm/yyyy" data-mask id="unloadingdate"
+                                            name="unloadingdate" placeholder="Unloading date">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="unloadingqty" id="unloadingqty"
+                                            placeholder="Unloading (Qty)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="helperunload" id="helperunload"
+                                            placeholder="Helper unload (Adv)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="hsdqty" id="hsdqty"
+                                            placeholder="HSD qty (LTS)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="advcash" id="advcash"
+                                            placeholder="Advance cash">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="totaladv" id="totaladv"
+                                            placeholder="Total advance">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="billingrate" id="billingrate"
+                                            placeholder="Billing rate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="totalamount"
+                                            id="totalamount" placeholder="Total Amount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="hidden" class="form-control" name="status" id="status" value="ACID">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width:100%">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
